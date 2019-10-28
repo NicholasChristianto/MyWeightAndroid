@@ -78,7 +78,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Nicholas Christianto Wijaya** - *Initial work* - [PurpleBooth](https://github.com/NicholasChristianto)
-* **Stephanie Nadia Carrisa** - *Initial work* - [PurpleBooth](https://github.com/NicholasChristianto)
+* **Stephanie Nadia Carrisa** - *Initial work* - [PurpleBooth](https://github.com/nadiacarrisa)
 * **Valent Christian Adiputra** - *Initial work* - [PurpleBooth](https://github.com/valentcap)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
