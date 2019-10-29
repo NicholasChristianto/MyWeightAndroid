@@ -8,18 +8,48 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrasi">
+        android:text="Registrasi"
+        android:textSize="30dp">
     </TextView>
+    <EditText
+        android:id="@+id/textNamaRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Nama">
+    </EditText>
     <EditText
         android:id="@+id/textEmailRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
         android:hint="Email">
     </EditText>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jenis Kelamin : "
+            android:textSize="17dp"></TextView>
+        <RadioButton
+            android:id="@+id/radiolakilaki"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Laki laki"></RadioButton>
+        <RadioButton
+            android:id="@+id/radioperempuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perempuan"></RadioButton>
+    </LinearLayout>
     <EditText
         android:id="@+id/textPasswordRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:hint="Password">
     </EditText>
     <EditText
@@ -27,6 +57,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Konfirmasi password">
+    </EditText>
+    <EditText
+        android:id="@+id/textBeratBadanRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Berat Badan (kg)">
+    </EditText>
+    <EditText
+        android:id="@+id/textTinggiBadanRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tinggi Badan (cm)">
     </EditText>
     <Button
         android:id="@+id/buttonRegister"

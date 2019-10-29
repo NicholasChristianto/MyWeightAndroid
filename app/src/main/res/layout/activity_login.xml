@@ -6,11 +6,22 @@
     android:layout_margin="20dp"
     android:gravity="center">
 
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="210dp"
+        android:layout_height="185dp"
+        android:src="@mipmap/ic_launcher_myweight_foreground" />
+
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/NamaApp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login">
-    </TextView>
+        android:text="My Weight"
+        android:textFontWeight="@android:integer/config_longAnimTime"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textSize="30dp"
+        android:textColor="#000067"/>
     <EditText
         android:id="@+id/txtEmail"
         android:layout_width="match_parent"
@@ -32,7 +43,7 @@
         android:text="Login"
         android:onClick="Login"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -40,12 +51,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Not a member?"></TextView>
+            android:text="Not a member?"
+            android:fontFamily="serif"></TextView>
         <TextView
+            android:id="@+id/Registernow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Register now!"
             android:onClick="Register"
-            android:clickable="true"></TextView>
+            android:clickable="true"
+            android:fontFamily="serif"></TextView>
     </LinearLayout>
 </LinearLayout>
