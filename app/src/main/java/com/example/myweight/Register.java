@@ -42,12 +42,8 @@ public class Register extends AppCompatActivity {
             public void onClick(View v) {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(getApplicationContext(), "Email atau Password salah", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if(!(password.isEmpty()&& email.isEmpty())){
@@ -55,12 +51,12 @@ public class Register extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                Toast.makeText(Register.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Register.this, "Registrasi Berhasil", Toast.LENGTH_SHORT).show();
                                 Intent Login = new Intent(Register.this,Login.class);
                                 finish();
                                 startActivity(Login);
                             }else
-                                Toast.makeText(Register.this, "Sign Up Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Register.this, "Registrasi gagal", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
