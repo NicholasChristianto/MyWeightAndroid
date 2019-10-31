@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Register extends AppCompatActivity {
@@ -33,34 +34,30 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         inputEmail = (EditText) findViewById(R.id.textEmailRegister);
-        inputPassword = (EditText) findViewById(R.id.txtPassword);
+        inputPassword = (EditText) findViewById(R.id.textPasswordRegister);
         regis = (Button) findViewById(R.id.buttonRegister);
         mAuth = FirebaseAuth.getInstance();
-
-        regis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "Email atau Password salah", Toast.LENGTH_SHORT).show();
-                    return;
+    }
+    public void Registrasi(View view){
+        String email = inputEmail.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || password.length()<6) {
+            Toast.makeText(getApplicationContext(), "Email atau Password salah", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(Register.this, "Registrasi Gagal", Toast.LENGTH_LONG).show();
+                    } else {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Intent intent = new Intent(Register.this, MenuUtama.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
-                else if(!(password.isEmpty()&& email.isEmpty())){
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(Register.this, "Registrasi Berhasil", Toast.LENGTH_SHORT).show();
-                                Intent Login = new Intent(Register.this,Login.class);
-                                finish();
-                                startActivity(Login);
-                            }else
-                                Toast.makeText(Register.this, "Registrasi gagal", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        });
+            });
     }
 }
