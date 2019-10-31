@@ -5,80 +5,66 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Register extends AppCompatActivity {
-    private EditText nama;
-    private EditText email;
-    private RadioGroup radioBtn;
-    private String jeniskelamin;
-    private EditText password;
-    private EditText konfirmasipass;
-    private EditText berat;
-    private EditText tinggi;
+    private EditText inputEmail;
+    private EditText inputPassword;
     private Button regis;
-    private FirebaseFirestore firebaseFirestoreDb;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        nama = findViewById(R.id.textNamaRegister);
-        email = findViewById(R.id.textEmailRegister);
-        password = findViewById(R.id.textPasswordRegister);
-        konfirmasipass = findViewById(R.id.textKonfirmasiRegister);
-        berat = findViewById(R.id.textBeratBadanRegister);
-        tinggi = findViewById(R.id.textTinggiBadanRegister);
-        regis = findViewById(R.id.buttonRegister);
-        radioBtn = findViewById(R.id.radiobtn);
-        firebaseFirestoreDb = FirebaseFirestore.getInstance();
-        radioBtn.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                RadioButton rb= (RadioButton) findViewById(checkedId);
-                jeniskelamin = rb.getText().toString();
-            }
-        });
-
+        inputEmail = (EditText) findViewById(R.id.textEmailRegister);
+        inputPassword = (EditText) findViewById(R.id.txtPassword);
+        regis = (Button) findViewById(R.id.buttonRegister);
+        mAuth = FirebaseAuth.getInstance();
 
         regis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!nama.getText().toString().isEmpty() && !email.getText().toString().isEmpty()&& !password.getText().toString().isEmpty()&& !konfirmasipass.getText().toString().isEmpty()&& !berat.getText().toString().isEmpty()&& !tinggi.getText().toString().isEmpty() && !jeniskelamin.isEmpty()) {
-                    tambahUser();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Form tidak boleh kosong",Toast.LENGTH_SHORT).show();
+                String email = inputEmail.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(!(password.isEmpty()&& email.isEmpty())){
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(Register.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                                Intent Login = new Intent(Register.this,Login.class);
+                                finish();
+                                startActivity(Login);
+                            }else
+                                Toast.makeText(Register.this, "Sign Up Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
-        });
-
-    }
-    private void tambahUser(){
-        user us = new user(nama.getText().toString(), email.getText().toString(), jeniskelamin, password.getText().toString(), Integer.parseInt(berat.getText().toString()), Integer.parseInt(tinggi.getText().toString()));
-        firebaseFirestoreDb.collection("User").document().set(us).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "User berhasil didaftarkan",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Register.this, Login.class);
-                startActivity(intent);
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "ERROR" + e.toString(),Toast.LENGTH_SHORT).show();
-                        Log.d("TAG", e.toString());
-                    }
-
         });
     }
 }
