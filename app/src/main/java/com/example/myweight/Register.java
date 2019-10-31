@@ -1,5 +1,6 @@
 package com.example.myweight;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,7 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Register extends AppCompatActivity {
     private EditText nama;
     private EditText email;
-    private RadioButton jeniskelamin;
+    private RadioGroup radioBtn;
+    private String jeniskelamin;
     private EditText password;
     private EditText konfirmasipass;
     private EditText berat;
@@ -36,15 +39,22 @@ public class Register extends AppCompatActivity {
         berat = findViewById(R.id.textBeratBadanRegister);
         tinggi = findViewById(R.id.textTinggiBadanRegister);
         regis = findViewById(R.id.buttonRegister);
+        radioBtn = findViewById(R.id.radiobtn);
         firebaseFirestoreDb = FirebaseFirestore.getInstance();
+        radioBtn.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                RadioButton rb= (RadioButton) findViewById(checkedId);
+                jeniskelamin = rb.getText().toString();
+            }
+        });
+
 
         regis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!nama.getText().toString().isEmpty() && !email.getText().toString().isEmpty()&& !password.getText().toString().isEmpty()&& !konfirmasipass.getText().toString().isEmpty()&& !berat.getText().toString().isEmpty()&& !tinggi.getText().toString().isEmpty()) {
+                if (!nama.getText().toString().isEmpty() && !email.getText().toString().isEmpty()&& !password.getText().toString().isEmpty()&& !konfirmasipass.getText().toString().isEmpty()&& !berat.getText().toString().isEmpty()&& !tinggi.getText().toString().isEmpty() && !jeniskelamin.isEmpty()) {
                     tambahUser();
-
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Form tidak boleh kosong",Toast.LENGTH_SHORT).show();
                 }
@@ -53,7 +63,7 @@ public class Register extends AppCompatActivity {
 
     }
     private void tambahUser(){
-        user us = new user(nama.getText().toString(), email.getText().toString(), jeniskelamin.getText().toString(), password.getText().toString(), Integer.parseInt(berat.getText().toString()), Integer.parseInt(tinggi.getText().toString()));
+        user us = new user(nama.getText().toString(), email.getText().toString(), jeniskelamin, password.getText().toString(), Integer.parseInt(berat.getText().toString()), Integer.parseInt(tinggi.getText().toString()));
         firebaseFirestoreDb.collection("User").document().set(us).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
