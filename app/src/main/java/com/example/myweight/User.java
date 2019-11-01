@@ -8,7 +8,7 @@ public class User {
     private int berat;
     private int tinggi;
     private double hasilBMI;
-    private int kategori;
+    private String kategori;
 
     public User(String nama, String email, String jeniskelamin, String password, int berat, int tinggi){
         this.setNama(nama);
@@ -71,11 +71,11 @@ public class User {
 
     public void setHasilBMI(double hasilBMI){ this.hasilBMI = hasilBMI; }
 
-    public int getKategori() {
+    public String getKategori() {
         return kategori;
     }
 
-    public void setKategori(int kategori) {
+    public void setKategori(String kategori) {
         this.kategori = kategori;
     }
 
@@ -98,23 +98,23 @@ public class User {
         //>40       Very Severely Obese         (8)
         double hasilBMI = this.gethasilBMI();
         if(hasilBMI<15.0){
-            this.kategori = 1;
+            this.kategori = "Very Severely Underweight";
         }else if(hasilBMI<16.0){
-            this.kategori = 2;
+            this.kategori = "Severely Underweight";
         }else if(hasilBMI<18.5){
-            this.kategori = 3;
+            this.kategori = "Underweight";
         }else if(hasilBMI<25.0){
-            this.kategori = 4;
+            this.kategori = "Normal (Healthy Weight)";
         }else if(hasilBMI<30.0){
-            this.kategori = 5;
+            this.kategori = "Overweight";
         }else if(hasilBMI<35.0){
-            this.kategori = 6;
+            this.kategori = "Moderately Obese";
         }else if(hasilBMI<40.0){
-            this.kategori = 7;
+            this.kategori = "Severely Obese";
         }else if(hasilBMI>=40.0){
-            this.kategori = 8;
+            this.kategori = "Very Severely Obese";
         }else{
-            this.kategori = 0;
+            this.kategori = "Uncategorized";
         }
 
 
