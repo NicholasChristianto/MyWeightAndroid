@@ -6,14 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MenuUtama extends AppCompatActivity {
+public class MenuUtama extends AppCompatActivity{
 
     private ActionBar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +47,11 @@ public class MenuUtama extends AppCompatActivity {
                     return true;
                 case R.id.navigation_home:
                     toolbar.setTitle("Home");
+                    loadFragment(new HomeFragment());
                     return true;
                 case R.id.navigation_akun:
                     toolbar.setTitle("Settings");
+                    loadFragment(new SettingFragment());
                     return true;
             }
             return false;
@@ -56,4 +63,5 @@ public class MenuUtama extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 }
