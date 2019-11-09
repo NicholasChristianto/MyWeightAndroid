@@ -43,14 +43,14 @@ public class MenuUtama extends AppCompatActivity{
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_tips:
-                    toolbar.setTitle("Tips");
+                    toolbar.setTitle("History");
                     return true;
                 case R.id.navigation_home:
                     toolbar.setTitle("Home");
                     loadFragment(new HomeFragment());
                     return true;
                 case R.id.navigation_akun:
-                    toolbar.setTitle("Settings");
+                    toolbar.setTitle("Profile");
                     loadFragment(new SettingFragment());
                     return true;
             }
