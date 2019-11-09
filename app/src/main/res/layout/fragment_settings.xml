@@ -61,10 +61,17 @@
         </LinearLayout>
     </LinearLayout>
     <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Update"
+    android:id="@+id/btnUpdate"
+    android:layout_gravity="center"
+    />
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update"
-        android:id="@+id/btnUpdate"
+        android:text="Logout"
+        android:id="@+id/btnLogout"
         android:layout_gravity="center"
         />
 
