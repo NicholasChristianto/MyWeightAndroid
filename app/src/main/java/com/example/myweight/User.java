@@ -9,6 +9,7 @@ public class User {
     private int tinggi;
     private double hasilBMI;
     private String kategori;
+    private double kebutuhanKalori;
 
     public User(String nama, String email, String jeniskelamin, String password, int berat, int tinggi){
         this.setNama(nama);
@@ -17,6 +18,13 @@ public class User {
         this.setPassword(password);
         this.setBerat(berat);
         this.setTinggi(tinggi);
+        double k;
+        if(this.jeniskelamin.equalsIgnoreCase("laki-laki")){
+            //kebutuhan kalori kegiatan standar / ringan
+            k = 24 * 0.95 * 1.55 * berat;
+        }else{
+            k = 0.9 * 24 * 0.95 * 1.55 * berat;
+        }
     }
 
     public String getNama() {
