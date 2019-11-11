@@ -25,6 +25,7 @@ public class User {
         }else{
             k = 0.9 * 24 * 0.95 * 1.55 * berat;
         }
+        this.setKebutuhanKalori(k);
     }
 
     public String getNama() {
@@ -65,6 +66,14 @@ public class User {
 
     public void setBerat(int berat) {
         this.berat = berat;
+    }
+
+    public double getkebutuhanKalori() {
+        return this.kebutuhanKalori;
+    }
+
+    public void setKebutuhanKalori(double kebutuhanKalori) {
+        this.kebutuhanKalori = kebutuhanKalori;
     }
 
     public int getTinggi() {
