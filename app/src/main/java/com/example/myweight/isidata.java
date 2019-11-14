@@ -19,7 +19,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class isidata extends AppCompatActivity {
@@ -34,6 +39,9 @@ public class isidata extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_isidata);
+        final Date d = Calendar.getInstance().getTime();
+        final SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+        final String formattedDate = df.format(d);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestoreDb = FirebaseFirestore.getInstance();
         nama = (EditText) findViewById(R.id.nama);
@@ -47,14 +55,11 @@ public class isidata extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!nama.getText().toString().isEmpty() && !berat.getText().toString().isEmpty() && !tinggi.getText().toString().isEmpty()){
-                    Map<String,Object> isidata = new HashMap<>();
-                    isidata.put("name",nama);
-                    isidata.put("berat",berat);
-                    isidata.put("tinggi", tinggi);
-                    firebaseFirestoreDb.collection("user").add(isidata)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    User user = new User(nama.getText().toString(), Integer.parseInt(berat.getText().toString()),Integer.parseInt(tinggi.getText().toString()));
+                    firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
+                                public void onSuccess(Void aVoid) {
                                     Toast.makeText(isidata.this, "Berhasil", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(isidata.this, MenuUtama.class);
                                     startActivity(intent);

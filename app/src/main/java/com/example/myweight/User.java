@@ -11,6 +11,11 @@ public class User {
     private String kategori;
     private double kebutuhanKalori;
 
+    public User(String nama, int berat, int tinggi){
+        this.nama = nama;
+        this.berat = berat;
+        this.tinggi = tinggi;
+    }
     public User(String nama, String email, String jeniskelamin, String password, int berat, int tinggi){
         this.setNama(nama);
         this.setEmail(email);
