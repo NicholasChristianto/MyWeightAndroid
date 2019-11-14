@@ -53,7 +53,7 @@ public class Register extends AppCompatActivity {
                         Toast.makeText(Register.this, "Registrasi Gagal", Toast.LENGTH_LONG).show();
                     } else {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(Register.this, MenuUtama.class);
+                        Intent intent = new Intent(Register.this, isidata.class);
                         startActivity(intent);
                         finish();
                     }

@@ -3,8 +3,10 @@
     package="com.example.myweight">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature android:name="android.hardware.sensor.stepcounter" />
     <uses-feature android:name="android.hardware.sensor.stepdetector" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_myweight_foreground"
@@ -12,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_myweight_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuUtama"></activity>
+        <activity android:name=".isidata"></activity>
+        <activity android:name=".MenuUtama" />
         <activity android:name=".Register" />
         <activity android:name=".Login" />
         <activity
