@@ -86,8 +86,6 @@ public class History extends Fragment {
                     }
                 });
         System.out.println(us.getBerat());
-//        lineEntries.add(new Entry(0, us.getBerat()));
-//        lineEntries.add(new Entry(1, us.getTinggi()));
 //        lineEntries.add(new Entry(0, (float) us.gethasilBMI()));   //Belum berhasil dari data usernya
 //        lineEntries.add(new Entry(1, (float) us.gethasilBMI()));   //Belum berhasil dari data usernya
         lineEntries.add(new Entry(0, 3));
