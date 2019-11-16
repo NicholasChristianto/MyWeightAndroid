@@ -11,6 +11,8 @@ public class User {
     private String kategori;
     private double kebutuhanKalori;
 
+    public User(){}
+
     public User(String nama, int berat, int tinggi){
         this.nama = nama;
         this.berat = berat;
