@@ -9,7 +9,8 @@ public class User {
     private int tinggi;
     private double hasilBMI;
     private String kategori;
-    private Double kebutuhanKalori;
+    private double kebutuhanKalori;
+//    private Double kebutuhanKalori;
 
     public User(){}
 
@@ -144,15 +145,15 @@ public class User {
 
     }
 
-    public void hitungkebutuhanKalori(){
-        Double modif;
-        if(this.jeniskelamin.equalsIgnoreCase("laki--laki")){
-            modif = 1.0;
-        }else{
-            modif = 0.9;
-        }
-
-        this.kebutuhanKalori = this.berat * modif * 24 *0.95 * 1.15;
-
-    }
+//    public void hitungkebutuhanKalori(){
+//        Double modif;
+//        if(this.jeniskelamin.equalsIgnoreCase("laki--laki")){
+//            modif = 1.0;
+//        }else{
+//            modif = 0.9;
+//        }
+//
+//        this.kebutuhanKalori = this.berat * modif * 24 *0.95 * 1.15;
+//
+//    }
 }

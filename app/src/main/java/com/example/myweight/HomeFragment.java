@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Date d = Calendar.getInstance().getTime();
-        final SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
+        final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         final String formattedDate = df.format(d);
         View v = inflater.inflate(R.layout.fragment_home,container,false);
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
@@ -86,44 +86,13 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                 });
 //        labelWelcome.setText("Hi, "+firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate)+" Welcome to MyWeight");
 
-        LineChart lineChart = v.findViewById(R.id.lineChart);
-        List<Entry> lineEntries = getDataSet();
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Berat");
-        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-        lineDataSet.setHighlightEnabled(true);
-        lineDataSet.setLineWidth(2);
-        lineDataSet.setColor(Color.BLUE);
-        lineDataSet.setCircleColor(Color.GREEN);
-        lineDataSet.setCircleRadius(6);
-        lineDataSet.setCircleHoleRadius(3);
-        lineDataSet.setDrawHighlightIndicators(true);
-        lineDataSet.setHighLightColor(Color.RED);
-        lineDataSet.setValueTextSize(12);
-        lineDataSet.setValueTextColor(Color.DKGRAY);
 
-        LineData lineData = new LineData(lineDataSet);
-        lineChart.getDescription().setText("Tanggal");
-        lineChart.getDescription().setTextSize(12);
-        lineChart.setDrawMarkers(true);
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-        lineChart.animateY(1000);
-        lineChart.getXAxis().setGranularityEnabled(true);
-        lineChart.getXAxis().setGranularity(1.0f);
-        lineChart.getXAxis().setLabelCount(lineDataSet.getEntryCount());
-        lineChart.setData(lineData);
         return v;
     }
     private void drawLineChart() {
 
     }
-    private List<Entry> getDataSet() {
-        List<Entry> lineEntries = new ArrayList<Entry>();
-        lineEntries.add(new Entry(0, 1));
-        lineEntries.add(new Entry(1, 2));
-//        User user = new User();
-//        lineEntries.add(new Entry(0,Integer.parseInt(String.valueOf(user.gethasilBMI()))));   //Belum berhasil dari data usernya
-        return lineEntries;
-    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

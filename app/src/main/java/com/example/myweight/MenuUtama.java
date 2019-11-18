@@ -44,6 +44,7 @@ public class MenuUtama extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.navigation_tips:
                     toolbar.setTitle("History");
+                    loadFragment(new HistoryFragment());
                     return true;
                 case R.id.navigation_home:
                     toolbar.setTitle("Home");
