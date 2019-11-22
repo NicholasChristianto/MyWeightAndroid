@@ -49,6 +49,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private int numSteps;
     private FirebaseFirestore firebaseFirestoreDb;
     private TextView labelWelcome;
+    private TextView labelBerat;
+    private TextView labelTinggi;
+    private TextView labelbmi;
+    private TextView labelKategori;
     private String UIDFirebase;
     @Nullable
     @Override
@@ -65,6 +69,12 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_FASTEST);
         firebaseFirestoreDb = FirebaseFirestore.getInstance();
         labelWelcome = v.findViewById(R.id.labelWelcome);
+        labelBerat = v.findViewById(R.id.labelBerat);
+        labelTinggi = v.findViewById(R.id.labelTinggi);
+        labelbmi = v.findViewById(R.id.labelbmi);
+        labelKategori = v.findViewById(R.id.labelkategori);
+
+
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UIDFirebase = user.getUid();
         Task<QuerySnapshot> docRef = firebaseFirestoreDb.collection(UIDFirebase)
@@ -78,6 +88,11 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 us.setBerat(Integer.parseInt(String.valueOf((Long)document.get("berat"))));
                                 us.setTinggi(Integer.parseInt(String.valueOf((Long) document.get("tinggi"))));
                                 labelWelcome.setText("Hi "+us.getNama()+", Welcome to MyWeight");
+                                labelTinggi.setText("Tinggi Badan = "+us.getTinggi()+"");
+                                labelBerat.setText("Berat Badan = "+us.getBerat()+"");
+                                labelbmi.setText("BMI = "+us.gethasilBMI());
+                                labelKategori.setText("Category = "+us.getKategori());
+
                                 break;
                             }
                         } else {

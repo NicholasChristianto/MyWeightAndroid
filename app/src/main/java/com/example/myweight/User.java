@@ -34,6 +34,9 @@ public class User {
             k = 0.9 * 24 * 0.95 * 1.55 * berat;
         }
         this.setKebutuhanKalori(k);
+       this.hitungBMI();
+       this.hitungKategori();
+
     }
 
     public String getNama() {
@@ -106,7 +109,7 @@ public class User {
 
 
     public void hitungBMI(){
-        double berat = (double) this.getBerat();
+        double berat =  (Double.parseDouble(this.getBerat()+""));
         double tinggi = (double) this.getTinggi() / 100.0;
         double hasil = berat / tinggi;
         this.setHasilBMI(hasil);
