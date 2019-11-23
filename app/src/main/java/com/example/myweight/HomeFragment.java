@@ -53,6 +53,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private TextView labelTinggi;
     private TextView labelbmi;
     private TextView labelKategori;
+    private TextView labelKebutuhanKalori;
+    private TextView labelberatideal;
     private String UIDFirebase;
     @Nullable
     @Override
@@ -73,6 +75,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         labelTinggi = v.findViewById(R.id.labelTinggi);
         labelbmi = v.findViewById(R.id.labelbmi);
         labelKategori = v.findViewById(R.id.labelkategori);
+        labelKebutuhanKalori = v.findViewById(R.id.labelkebutuhankalori);
+        labelberatideal = v.findViewById(R.id.labelberatideal);
 
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -85,13 +89,20 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 User us =new User();
                                 us.setNama(document.get("nama").toString());
-                                us.setBerat(Integer.parseInt(String.valueOf((Long)document.get("berat"))));
-                                us.setTinggi(Integer.parseInt(String.valueOf((Long) document.get("tinggi"))));
+                                us.setBerat(Double.parseDouble(String.valueOf((Long)document.get("berat"))));
+                                us.setTinggi(Double.parseDouble(String.valueOf((Long) document.get("tinggi"))));
+
                                 labelWelcome.setText("Hi "+us.getNama()+", Welcome to MyWeight");
-                                labelTinggi.setText("Tinggi Badan = "+us.getTinggi()+"");
-                                labelBerat.setText("Berat Badan = "+us.getBerat()+"");
+                                labelTinggi.setText("Tinggi Badan = "+us.getTinggi()+" cm");
+                                labelBerat.setText("Berat Badan = "+us.getBerat()+" kg");
+                                us.hitungBMI();
+                                us.hitungKategori();
+                                us.hitungkebutuhanKalori();
+                                us.hitungBeratIdeal();
                                 labelbmi.setText("BMI = "+us.gethasilBMI());
                                 labelKategori.setText("Category = "+us.getKategori());
+                                labelKebutuhanKalori.setText("Kebutuhan Kalori Harian = "+us.getkebutuhanKalori()+" kalori");
+                                labelberatideal.setText("Berat Badan ideal = "+us.getBeratIdeal()+" kg");
 
                                 break;
                             }

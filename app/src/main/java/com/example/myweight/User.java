@@ -5,39 +5,30 @@ public class User {
     private String email;
     private String jeniskelamin;
     private String password;
-    private int berat;
-    private int tinggi;
+    private double berat;
+    private double tinggi;
     private double hasilBMI;
     private String kategori;
     private double kebutuhanKalori;
+    private double beratIdeal;
 //    private Double kebutuhanKalori;
 
     public User(){}
 
-    public User(String nama, int berat, int tinggi){
+    public User(String nama, double berat, double tinggi){
         this.nama = nama;
         this.berat = berat;
         this.tinggi = tinggi;
     }
-    public User(String nama, String email, String jeniskelamin, String password, int berat, int tinggi){
-        this.setNama(nama);
-        this.setEmail(email);
-        this.setJeniskelamin(jeniskelamin);
-        this.setPassword(password);
-        this.setBerat(berat);
-        this.setTinggi(tinggi);
-        double k;
-        if(this.jeniskelamin.equalsIgnoreCase("laki-laki")){
-            //kebutuhan kalori kegiatan standar / ringan
-            k = 24 * 0.95 * 1.55 * berat;
-        }else{
-            k = 0.9 * 24 * 0.95 * 1.55 * berat;
-        }
-        this.setKebutuhanKalori(k);
-       this.hitungBMI();
-       this.hitungKategori();
-
-    }
+//    public User(String nama, String email, String jeniskelamin, String password, double berat, double tinggi){
+//        this.setNama(nama);
+//        this.setEmail(email);
+//        this.setJeniskelamin(jeniskelamin);
+//        this.setPassword(password);
+//        this.setBerat(berat);
+//        this.setTinggi(tinggi);
+//
+//    }
 
     public String getNama() {
         return nama;
@@ -71,11 +62,11 @@ public class User {
         this.password = password;
     }
 
-    public int getBerat() {
+    public double getBerat() {
         return berat;
     }
 
-    public void setBerat(int berat) {
+    public void setBerat(double berat) {
         this.berat = berat;
     }
 
@@ -87,11 +78,13 @@ public class User {
         this.kebutuhanKalori = kebutuhanKalori;
     }
 
-    public int getTinggi() {
+    public double getBeratIdeal(){ return this.beratIdeal; }
+
+    public double getTinggi() {
         return tinggi;
     }
 
-    public void setTinggi(int tinggi) {
+    public void setTinggi(double tinggi) {
         this.tinggi = tinggi;
     }
 
@@ -111,7 +104,7 @@ public class User {
     public void hitungBMI(){
         double berat =  (Double.parseDouble(this.getBerat()+""));
         double tinggi = (double) this.getTinggi() / 100.0;
-        double hasil = berat / tinggi;
+        double hasil = berat / tinggi / tinggi;
         this.setHasilBMI(hasil);
     }
 
@@ -148,15 +141,13 @@ public class User {
 
     }
 
-//    public void hitungkebutuhanKalori(){
-//        Double modif;
-//        if(this.jeniskelamin.equalsIgnoreCase("laki--laki")){
-//            modif = 1.0;
-//        }else{
-//            modif = 0.9;
-//        }
-//
-//        this.kebutuhanKalori = this.berat * modif * 24 *0.95 * 1.15;
-//
-//    }
+    public void hitungkebutuhanKalori(){
+        this.kebutuhanKalori = this.berat * 24 *0.95 * 1.15;
+    }
+
+    public void hitungBeratIdeal(){
+        double ideal;
+        ideal = 22 * this.getTinggi() * this.getTinggi() / 10000;
+        this.beratIdeal = ideal;
+    }
 }
