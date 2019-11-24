@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static android.content.Context.SENSOR_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
@@ -55,10 +56,18 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private TextView labelKategori;
     private TextView labelKebutuhanKalori;
     private TextView labelberatideal;
+    private TextView texttips;
     private String UIDFirebase;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final String TipsOver[] = {"Banyakin minum air putih ya", "1-2 gelas air hangat setiap bangun tidur","Jalan santai untuk membantu membakar kalori", "Makan buah berserat ya","Coba deh berhenti makan sebelum kenyang",
+                "Lari sangat cocok untuk membakar kalori","Jangan makan saat stress yah","Belajar kendalikan diri untuk mencoba semua makanan","Makan teratur sangat berpengaruh loh","Tidur cukup dapat mengendalikan hormon nafsu makan"};
+        final String TipsUnder[] = {"Pilih makanan yang memiliki nutrisi tinggi ya", "Sering sering makan daripada makan 3x dengan porsi yang besar", "Jus dan Smoothies juga membantu menaikan berat badan lohh","Garam dapat menambah berat badan looh","Jangan minum banyak sebelum makan yah",
+                "Olahraga baik, tapi batasi latihan kardio ya","Tambahlah konsumsi kalori perhari","Jangan lupa untuk makan karbohidrat","Lemak & protein harus terpenuhi ya","Cobalah minum susu pagi dan malam hari"};
+        final String TipsNormal[] = {"Pilih camilan yang sehat yaa", "Jangan lupa untuk minum air putih sebelum makan","Coba makan snack yang membuat kenyang lebih lama","Tidur yang cukup ya..","Jangan lewatkan sarapan loh",
+                "Bergerak, jangan malas","Buatlah rencana makanan sehat","Jangan ngemil terlebih malam hari","Makan jangan terlalu cepat ya","Coba ganti menu sehingga tidak bosan"};
+
         final Date d = Calendar.getInstance().getTime();
         final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         final String formattedDate = df.format(d);
@@ -77,7 +86,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         labelKategori = v.findViewById(R.id.labelkategori);
         labelKebutuhanKalori = v.findViewById(R.id.labelkebutuhankalori);
         labelberatideal = v.findViewById(R.id.labelberatideal);
-
+        texttips = v.findViewById(R.id.txttips);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UIDFirebase = user.getUid();
@@ -103,7 +112,17 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 labelKategori.setText("Category = "+us.getKategori());
                                 labelKebutuhanKalori.setText("Kebutuhan Kalori Harian = "+us.getkebutuhanKalori()+" kalori");
                                 labelberatideal.setText("Berat Badan ideal = "+us.getBeratIdeal()+" kg");
-
+                                Random r = new Random();
+                                int rand = r.nextInt(10);
+                                String tips = "";
+                                if(us.gethasilBMI()<18.5)
+                                    tips = "\"" + TipsUnder[rand%(TipsUnder.length-1)] + "\" ";
+                                else if(us.gethasilBMI()<25.0)
+                                    tips = "\"" + TipsNormal[rand%(TipsNormal.length-1)] + "\" ";
+                                else if(us.gethasilBMI()>=40.0)
+                                    tips = "\"" + TipsOver[rand % (TipsOver.length - 1)] + "\" ";
+                                tips = tips.concat("MyWeight");
+                                texttips.setText(tips);
                                 break;
                             }
                         } else {
