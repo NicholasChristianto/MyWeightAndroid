@@ -51,12 +51,19 @@ public class isidata extends AppCompatActivity {
         btnsimpandata = (Button) findViewById(R.id.btnsimpandata);
         UIDFirebase = user.getUid();
         UID.setText(UIDFirebase);
+        final double[] tampungBMI = new double[1];
         btnsimpandata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!nama.getText().toString().isEmpty() && !berat.getText().toString().isEmpty() && !tinggi.getText().toString().isEmpty()){
-                    User user = new User(nama.getText().toString(), Integer.parseInt(berat.getText().toString()),Integer.parseInt(tinggi.getText().toString()));
-                    firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(user)
+                    User user = new User();
+                    user.setNama(nama.getText().toString());
+                    user.setBerat(Integer.parseInt(berat.getText().toString()));
+                    user.setTinggi(Integer.parseInt(tinggi.getText().toString()));
+                    user.hitungBMI();
+                    tampungBMI[0] = user.gethasilBMI();
+                    User us = new User(nama.getText().toString(),Integer.parseInt(berat.getText().toString()),Integer.parseInt(tinggi.getText().toString()), tampungBMI[0]);
+                    firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(us)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
