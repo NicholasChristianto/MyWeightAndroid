@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:text="Nama: "
+            android:text="Nama: \t"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email: "
+            android:text="Email: \t\t"
             android:textColor="@android:color/black"
             />
         <TextView
@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Berat: "
+            android:text="Berat: \t\t"
             android:textColor="@android:color/black"
             />
         <EditText
@@ -60,7 +60,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tinggi: "
+            android:text="Tinggi: \t"
             android:textColor="@android:color/black"
             />
         <EditText
@@ -70,18 +70,22 @@
             />
     </LinearLayout>
     <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Update"
-    android:id="@+id/btnUpdate"
-    android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        style="@style/button"
+        android:id="@+id/btnUpdate"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
     />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
+        style="@style/button"
         android:id="@+id/btnLogout"
         android:layout_gravity="center"
-        />
+        android:layout_marginBottom="10dp"
+    />
 
 </LinearLayout>
