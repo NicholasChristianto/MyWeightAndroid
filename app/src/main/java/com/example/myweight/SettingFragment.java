@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,10 +23,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class SettingFragment extends Fragment {
    private Button btnlogout;
+   private Button btnUpdate;
    private EditText stgnama;
-   private EditText stgemail;
+   private TextView stgemail;
    private EditText stgberat;
    private EditText stgtinggi;
     private String UIDFirebase;
@@ -34,15 +42,19 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_settings,container,false);
+        final Date d = Calendar.getInstance().getTime();
+        final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        final String formattedDate = df.format(d);
         stgnama = v.findViewById(R.id.stgnama);
         stgemail = v.findViewById(R.id.stgemail);
         stgberat = v.findViewById(R.id.stgberat);
         stgtinggi = v.findViewById(R.id.stgtinggi);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             String name = user.getDisplayName();
             String email = user.getEmail();
             stgnama.setText(name);
+            stgemail.setTextSize(20);
             stgemail.setText(email);
         }
         btnlogout = v.findViewById(R.id.btnLogout);
@@ -56,6 +68,7 @@ public class SettingFragment extends Fragment {
                 startActivity(intent1);
             }
         });
+        final Double[] tampungBmi = {0.0};
         firebaseFirestoreDb = FirebaseFirestore.getInstance();
         UIDFirebase = user.getUid();
         Task<QuerySnapshot> docRef = firebaseFirestoreDb.collection(UIDFirebase)
@@ -63,11 +76,13 @@ public class SettingFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                User us =new User();
+                            for(QueryDocumentSnapshot document:task.getResult()) {
+                                User us = new User();
                                 us.setNama(document.get("nama").toString());
-                                us.setBerat(Integer.parseInt(String.valueOf((Long)document.get("berat"))));
-                                us.setTinggi(Integer.parseInt(String.valueOf((Long) document.get("tinggi"))));
+                                us.setBerat(Double.parseDouble(String.valueOf(document.get("berat"))));
+                                us.setTinggi(Double.parseDouble(String.valueOf(document.get("tinggi"))));
+                                us.hitungBMI();
+                                tampungBmi[0] = us.gethasilBMI();
                                 stgnama.setText(String.valueOf(us.getNama()));
                                 stgberat.setText(String.valueOf(us.getBerat()));
                                 stgtinggi.setText(String.valueOf(us.getTinggi()));
@@ -77,6 +92,24 @@ public class SettingFragment extends Fragment {
                         }
                     }
                 });
+        btnUpdate = v.findViewById(R.id.btnUpdate);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!stgnama.getText().toString().isEmpty() && !stgberat.getText().toString().isEmpty() && !stgtinggi.getText().toString().isEmpty()) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("nama", stgnama.getText().toString());
+                    map.put("berat", Double.valueOf(stgberat.getText().toString()));
+                    map.put("tinggi",Double.valueOf(stgtinggi.getText().toString()));
+                    map.put("hasilBMI", tampungBmi[0]);
+                    firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(map);
+                } else {
+                    Toast.makeText(requireActivity(), "Data tidak boleh kosong",
+                        Toast.LENGTH_SHORT).show();
+            }
+            }
+        });
         return v;
     }
+
 }
