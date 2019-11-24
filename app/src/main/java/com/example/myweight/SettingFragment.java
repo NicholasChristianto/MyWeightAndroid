@@ -103,6 +103,7 @@ public class SettingFragment extends Fragment {
                     map.put("tinggi",Double.valueOf(stgtinggi.getText().toString()));
                     map.put("hasilBMI", tampungBmi[0]);
                     firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(map);
+                    Toast.makeText(getActivity(), "Data Berhasil diubah!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(requireActivity(), "Data tidak boleh kosong",
                         Toast.LENGTH_SHORT).show();
