@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 us.setStep(Integer.parseInt(String.valueOf(document.get("step"))));
                                 nama = us.getNama();
                                 berat = us.getBerat();
-                                beratIdeal = us.getBeratIdeal();
+
                                 tinggi = us.getTinggi();
                                 step = us.getStep();
 
@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 us.hitungKategori();
                                 us.hitungkebutuhanKalori();
                                 us.hitungBeratIdeal();
+                                beratIdeal = us.getBeratIdeal();
                                 kebutuhanKalori = us.getkebutuhanKalori();
                                 labelbmi.setText("BMI = "+us.gethasilBMI());
                                 labelKategori.setText("Category = "+us.getKategori());
@@ -245,7 +246,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         if(berat > beratIdeal){
             //System.out.println("Obese");
             double sel = berat - beratIdeal;
-            double waktu = sel / changePerWeek;
+            double waktu = sel / changePerWeek * 7;
             double percent = (double) seekBar.getProgress();
 
             String formatted = String.format("%.0f", waktu);
@@ -268,7 +269,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
         }else if(berat < beratIdeal){
             double sel = beratIdeal - berat;
-            double waktu = sel / changePerWeek;
+            double waktu = sel / changePerWeek * 7;
             String formatted = String.format("%.0f", waktu);
             waktuTarget.setText("Waktu mencapai Target : "+formatted+ " hari");
             //kalori per kilogram
