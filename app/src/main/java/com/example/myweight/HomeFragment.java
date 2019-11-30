@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,11 @@ import static android.content.Context.SENSOR_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 public class HomeFragment extends Fragment implements SensorEventListener, StepListener{
+    double berat;
+    double beratIdeal;
+    double tinggi;
+    double kebutuhanKalori;
+
     private TextView TvSteps;
     private StepDetector simpleStepDetector;
     private SensorManager sensorManager;
@@ -57,6 +64,13 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private TextView labelKebutuhanKalori;
     private TextView labelberatideal;
     private TextView texttips;
+    private TextView waktuTarget;
+    private SeekBar seekBar;
+    private TextView labelkonsumsi;
+    private TextView labeltargetStep;
+    private Button btnHitung;
+    private TextView labelTargetKonsumsi;
+    private TextView labelTargetOlahraga;
     private String UIDFirebase;
     @Nullable
     @Override
@@ -71,6 +85,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         final Date d = Calendar.getInstance().getTime();
         final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         final String formattedDate = df.format(d);
+
         View v = inflater.inflate(R.layout.fragment_home,container,false);
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
         accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -87,6 +102,13 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         labelKebutuhanKalori = v.findViewById(R.id.labelkebutuhankalori);
         labelberatideal = v.findViewById(R.id.labelberatideal);
         texttips = v.findViewById(R.id.txttips);
+        seekBar = v.findViewById(R.id.seek);
+        waktuTarget = v.findViewById(R.id.waktu);
+        labelkonsumsi = v.findViewById(R.id.konsumsi);
+        labeltargetStep = v.findViewById(R.id.targetStep);
+        btnHitung = v.findViewById(R.id.hitung);
+        labelTargetKonsumsi = v.findViewById(R.id.targetKonsumsi);
+        labelTargetOlahraga = v.findViewById(R.id.targetOlahraga);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UIDFirebase = user.getUid();
@@ -98,8 +120,12 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 User us =new User();
                                 us.setNama(document.get("nama").toString());
-                                us.setBerat(Double.parseDouble(String.valueOf((Double)document.get("berat"))));
-                                us.setTinggi(Double.parseDouble(String.valueOf((Double) document.get("tinggi"))));
+                                us.setBerat(Double.parseDouble(String.valueOf((Long) document.get("berat"))));
+                                us.setTinggi(Double.parseDouble(String.valueOf((Long) document.get("tinggi"))));
+                                berat = us.getBerat();
+                                beratIdeal = us.getBeratIdeal();
+                                tinggi = us.getTinggi();
+
 
                                 labelWelcome.setText("Hi "+us.getNama()+", Welcome to MyWeight");
                                 labelTinggi.setText("Tinggi Badan = "+us.getTinggi()+" cm");
@@ -108,10 +134,12 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 us.hitungKategori();
                                 us.hitungkebutuhanKalori();
                                 us.hitungBeratIdeal();
+                                kebutuhanKalori = us.getkebutuhanKalori();
                                 labelbmi.setText("BMI = "+us.gethasilBMI());
                                 labelKategori.setText("Category = "+us.getKategori());
                                 labelKebutuhanKalori.setText("Kebutuhan Kalori Harian = "+us.getkebutuhanKalori()+" kalori");
                                 labelberatideal.setText("Berat Badan ideal = "+us.getBeratIdeal()+" kg");
+
                                 Random r = new Random();
                                 int rand = r.nextInt(10);
                                 String tips = "";
@@ -123,13 +151,40 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                     tips = "\"" + TipsOver[rand % (TipsOver.length - 1)] + "\" ";
                                 tips = tips.concat("MyWeight");
                                 texttips.setText(tips);
+
+
+                                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                    @Override
+                                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+                                        //System.out.println(i);
+                                    }
+
+                                    @Override
+                                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                                    }
+
+                                    @Override
+                                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                                    }
+                                });
                                 break;
+
+
                             }
                         } else {
                         }
                     }
                 });
 //        labelWelcome.setText("Hi, "+firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate)+" Welcome to MyWeight");
+        btnHitung.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hitung();
+            }
+        });
 
 
         return v;
@@ -155,5 +210,52 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     public void step(long timeNs) {
         numSteps++;
         TvSteps.setText(TEXT_NUM_STEPS + numSteps);
+    }
+
+
+
+
+    public void hitung(){
+        //penurunan / kenaikan berat per minggu
+        double changePerWeek = 1;
+        if(berat > beratIdeal){
+            //System.out.println("Obese");
+            double sel = berat - beratIdeal;
+            double waktu = sel / changePerWeek;
+            double percent = (double) seekBar.getProgress();
+
+            String formatted = String.format("%.0f", waktu);
+            waktuTarget.setText("Waktu mencapai Target : "+formatted+ " hari");
+            //kalori per kilogram
+            double con = 7716.18;
+            //panjang langkah in cm
+            double panjangLangkah = tinggi * 0.415;
+            double stepPerMile = 160934.4 / panjangLangkah;
+            //calories yang dibakar per step
+            double calPerStep = berat / 0.453952 * 0.57 / stepPerMile;
+            //target langkah / hari
+            double dailyTargetSteps = percent / 100.0 * changePerWeek / 7 * con;
+            labelTargetOlahraga.setText("Target step Harian: "+String.format("%.0f", dailyTargetSteps));
+            //target pengurangan kalori
+            double lessCalories = (100.0 - percent) / 100.0 * changePerWeek / 7 * con;
+            double konsumsiHarian = kebutuhanKalori - lessCalories;
+            labelTargetKonsumsi.setText("Target Konsumsi Kalori Harian: "+String.format("%.1f", konsumsiHarian));
+
+
+        }else if(berat < beratIdeal){
+            double sel = beratIdeal - berat;
+            double waktu = sel / changePerWeek;
+            String formatted = String.format("%.0f", waktu);
+            waktuTarget.setText("Waktu mencapai Target : "+formatted+ " hari");
+            //kalori per kilogram
+            double con = 7716.18;
+            //hitung kenaikan konsumsi utk mencapai target
+            double morecalories = changePerWeek / 7 * con;
+            morecalories+=kebutuhanKalori;
+            labelTargetKonsumsi.setText("Target Konsumsi Kalori Harian: "+ String.format("%.1f", morecalories));
+
+        }else{
+
+        }
     }
 }
