@@ -38,6 +38,7 @@ public class SettingFragment extends Fragment {
    private EditText stgtinggi;
     private String UIDFirebase;
     private FirebaseFirestore firebaseFirestoreDb;
+    private int step;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,11 +83,11 @@ public class SettingFragment extends Fragment {
                                 us.setBerat(Double.parseDouble(String.valueOf(document.get("berat"))));
                                 us.setTinggi(Double.parseDouble(String.valueOf(document.get("tinggi"))));
                                 us.hitungBMI();
+                                step=us.getStep();
                                 tampungBmi[0] = us.gethasilBMI();
                                 stgnama.setText(String.valueOf(us.getNama()));
                                 stgberat.setText(String.valueOf(us.getBerat()));
                                 stgtinggi.setText(String.valueOf(us.getTinggi()));
-                                break;
                             }
                         } else {
                         }
@@ -102,6 +103,7 @@ public class SettingFragment extends Fragment {
                     map.put("berat", Double.valueOf(stgberat.getText().toString()));
                     map.put("tinggi",Double.valueOf(stgtinggi.getText().toString()));
                     map.put("hasilBMI", tampungBmi[0]);
+                    map.put("step", step);
                     firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(map);
                     Toast.makeText(getActivity(), "Data Berhasil diubah!", Toast.LENGTH_SHORT).show();
                 } else {

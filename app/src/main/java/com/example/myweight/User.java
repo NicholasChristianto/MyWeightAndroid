@@ -12,6 +12,7 @@ public class User {
     private double kebutuhanKalori;
     private double beratIdeal;
     private String tanggal;
+    private int step;
 //    private Double kebutuhanKalori;
 
     public User(){}
@@ -109,6 +110,12 @@ public class User {
         return kategori;
     }
 
+    public int getStep(){
+        return step;
+    }
+    public void setStep(int step){
+        this.step = step;
+    }
     public void setKategori(String kategori) {
         this.kategori = kategori;
     }

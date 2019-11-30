@@ -57,6 +57,28 @@
             android:layout_alignWithParentIfMissing="true"
             android:gravity="center_vertical"
             android:textColor="@android:color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Step: "
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:id="@+id/col_step"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
             android:paddingBottom="10dp"/>
     </LinearLayout>

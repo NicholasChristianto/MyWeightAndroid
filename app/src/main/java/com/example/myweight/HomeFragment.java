@@ -37,7 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -48,13 +50,15 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     double beratIdeal;
     double tinggi;
     double kebutuhanKalori;
+    int step;
+    String nama;
 
     private TextView TvSteps;
     private StepDetector simpleStepDetector;
     private SensorManager sensorManager;
     private Sensor accel;
     private static final String TEXT_NUM_STEPS = "Number of Steps: ";
-    private int numSteps;
+    public int numSteps;
     private FirebaseFirestore firebaseFirestoreDb;
     private TextView labelWelcome;
     private TextView labelBerat;
@@ -72,6 +76,10 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private TextView labelTargetKonsumsi;
     private TextView labelTargetOlahraga;
     private String UIDFirebase;
+    User us =new User();
+    final Date d = Calendar.getInstance().getTime();
+    final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    final String formattedDate = df.format(d);
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,9 +90,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         final String TipsNormal[] = {"Pilih camilan yang sehat yaa", "Jangan lupa untuk minum air putih sebelum makan","Coba makan snack yang membuat kenyang lebih lama","Tidur yang cukup ya..","Jangan lewatkan sarapan loh",
                 "Bergerak, jangan malas","Buatlah rencana makanan sehat","Jangan ngemil terlebih malam hari","Makan jangan terlalu cepat ya","Coba ganti menu sehingga tidak bosan"};
 
-        final Date d = Calendar.getInstance().getTime();
-        final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        final String formattedDate = df.format(d);
+
 
         View v = inflater.inflate(R.layout.fragment_home,container,false);
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
@@ -118,14 +124,16 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for(QueryDocumentSnapshot document: task.getResult()){
-                                User us =new User();
+
                                 us.setNama(document.get("nama").toString());
-                                us.setBerat(Double.parseDouble(String.valueOf((Long) document.get("berat"))));
-                                us.setTinggi(Double.parseDouble(String.valueOf((Long) document.get("tinggi"))));
+                                us.setBerat(Double.parseDouble(String.valueOf(document.get("berat"))));
+                                us.setTinggi(Double.parseDouble(String.valueOf( document.get("tinggi"))));
+                                us.setStep(Integer.parseInt(String.valueOf(document.get("step"))));
+                                nama = us.getNama();
                                 berat = us.getBerat();
                                 beratIdeal = us.getBeratIdeal();
                                 tinggi = us.getTinggi();
-
+                                step = us.getStep();
 
                                 labelWelcome.setText("Hi "+us.getNama()+", Welcome to MyWeight");
                                 labelTinggi.setText("Tinggi Badan = "+us.getTinggi()+" cm");
@@ -139,7 +147,16 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 labelKategori.setText("Category = "+us.getKategori());
                                 labelKebutuhanKalori.setText("Kebutuhan Kalori Harian = "+us.getkebutuhanKalori()+" kalori");
                                 labelberatideal.setText("Berat Badan ideal = "+us.getBeratIdeal()+" kg");
-
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("nama", us.getNama());
+                                map.put("berat", us.getBerat());
+                                map.put("tinggi",us.getTinggi());
+                                map.put("hasilBMI",us.gethasilBMI());
+                                map.put("step", step+numSteps);
+                                firebaseFirestoreDb
+                                        .collection(UIDFirebase)
+                                        .document(formattedDate)
+                                        .update(map);
                                 Random r = new Random();
                                 int rand = r.nextInt(10);
                                 String tips = "";
@@ -170,7 +187,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
                                     }
                                 });
-                                break;
 
 
                             }
@@ -179,6 +195,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                     }
                 });
 //        labelWelcome.setText("Hi, "+firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate)+" Welcome to MyWeight");
+
         btnHitung.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,9 +205,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
 
         return v;
-    }
-    private void drawLineChart() {
-
     }
 
 
@@ -209,7 +223,17 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     @Override
     public void step(long timeNs) {
         numSteps++;
-        TvSteps.setText(TEXT_NUM_STEPS + numSteps);
+        TvSteps.setText(TEXT_NUM_STEPS + (step+numSteps));
+        Map<String, Object> map = new HashMap<>();
+        map.put("nama", us.getNama());
+        map.put("berat", us.getBerat());
+        map.put("tinggi",us.getTinggi());
+        map.put("hasilBMI",us.gethasilBMI());
+        map.put("step", step+numSteps);
+        firebaseFirestoreDb
+                .collection(UIDFirebase)
+                .document(formattedDate)
+                .update(map);
     }
 
 

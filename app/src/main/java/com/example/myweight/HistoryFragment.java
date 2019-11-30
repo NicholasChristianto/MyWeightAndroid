@@ -60,6 +60,7 @@ public class HistoryFragment extends Fragment {
                                 us.setTanggal("Tanggal: " + document.getId());
                                 us.setBerat((Double) document.get("berat"));
                                 us.setHasilBMI(((Double) document.get("hasilBMI")));
+                                us.setStep(Integer.parseInt(String.valueOf( document.get("step"))));
                                 dataUser.add(us);
                             }
                             rv.setHasFixedSize(true);
