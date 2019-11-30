@@ -27,33 +27,39 @@
         <TextView
             android:id="@+id/labelBerat"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/labelTinggi"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/labelbmi"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/labelkategori"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/labelkebutuhankalori"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/labelberatideal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"/>
         <TextView
             android:id="@+id/txttips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="italic"
-            android:textColor="#000000"/>
+            android:textColor="@android:color/black"/>
 
 
         <RelativeLayout
