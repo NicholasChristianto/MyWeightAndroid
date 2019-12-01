@@ -62,7 +62,7 @@ public class isidata extends AppCompatActivity {
                     user.setTinggi(Integer.parseInt(tinggi.getText().toString()));
                     user.hitungBMI();
                     tampungBMI[0] = user.gethasilBMI();
-                    User us = new User(nama.getText().toString(),Integer.parseInt(berat.getText().toString()),Integer.parseInt(tinggi.getText().toString()), tampungBMI[0]);
+                    User us = new User(nama.getText().toString(),Integer.parseInt(berat.getText().toString()),Integer.parseInt(tinggi.getText().toString()), tampungBMI[0], 0);
                     firebaseFirestoreDb.collection(UIDFirebase).document(formattedDate).set(us)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

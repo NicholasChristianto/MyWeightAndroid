@@ -153,10 +153,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                                 labelKebutuhanKalori.setText("Kebutuhan Kalori Harian = "+us.getkebutuhanKalori()+" kalori");
                                 labelberatideal.setText("Berat Badan ideal = "+us.getBeratIdeal()+" kg");
                                 Map<String, Object> map = new HashMap<>();
-                                map.put("nama", us.getNama());
-                                map.put("berat", us.getBerat());
-                                map.put("tinggi",us.getTinggi());
-                                map.put("hasilBMI",us.gethasilBMI());
                                 map.put("step", step+numSteps);
                                 firebaseFirestoreDb
                                         .collection(UIDFirebase)
@@ -234,10 +230,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
         numSteps++;
         TvSteps.setText(TEXT_NUM_STEPS + (step+numSteps));
         Map<String, Object> map = new HashMap<>();
-        map.put("nama", us.getNama());
-        map.put("berat", us.getBerat());
-        map.put("tinggi",us.getTinggi());
-        map.put("hasilBMI",us.gethasilBMI());
         map.put("step", step+numSteps);
         firebaseFirestoreDb
                 .collection(UIDFirebase)

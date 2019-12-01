@@ -22,11 +22,12 @@ public class User {
         this.berat = berat;
         this.tinggi = tinggi;
     }
-    public User(String nama, double berat, double tinggi, double hasilBMI){
+    public User(String nama, double berat, double tinggi, double hasilBMI, int step){
         this.nama = nama;
         this.berat = berat;
         this.tinggi = tinggi;
         this.hasilBMI = hasilBMI;
+        this.step = step;
     }
 //    public User(String nama, String email, String jeniskelamin, String password, double berat, double tinggi){
 //        this.setNama(nama);
