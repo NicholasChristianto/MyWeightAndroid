@@ -1,5 +1,7 @@
 package com.example.myweight;
 
+import java.text.ParseException;
+
 public class StepDetector {
 
     private static final int ACCEL_RING_SIZE = 50;
@@ -26,7 +28,7 @@ public class StepDetector {
     }
 
 
-    public void updateAccel(long timeNs, float x, float y, float z) {
+    public void updateAccel(long timeNs, float x, float y, float z) throws ParseException {
         float[] currentAccel = new float[3];
         currentAccel[0] = x;
         currentAccel[1] = y;

@@ -44,7 +44,7 @@ public class SettingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_settings,container,false);
         final Date d = Calendar.getInstance().getTime();
-        final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         final String formattedDate = df.format(d);
         stgnama = v.findViewById(R.id.stgnama);
         stgemail = v.findViewById(R.id.stgemail);

@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.util.Calendar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -78,7 +81,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     private String UIDFirebase;
     User us =new User();
     final Date d = Calendar.getInstance().getTime();
-    final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    final SimpleDateFormat df = new SimpleDateFormat("y-MM-dd");
     final String formattedDate = df.format(d);
     @Nullable
     @Override
@@ -118,6 +121,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UIDFirebase = user.getUid();
+
         Task<QuerySnapshot> docRef = firebaseFirestoreDb.collection(UIDFirebase)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -215,13 +219,17 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            simpleStepDetector.updateAccel(
-                    event.timestamp, event.values[0], event.values[1], event.values[2]);
+            try {
+                simpleStepDetector.updateAccel(
+                        event.timestamp, event.values[0], event.values[1], event.values[2]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void step(long timeNs) {
+    public void step(long timeNs) throws ParseException {
         numSteps++;
         TvSteps.setText(TEXT_NUM_STEPS + (step+numSteps));
         Map<String, Object> map = new HashMap<>();
@@ -234,6 +242,33 @@ public class HomeFragment extends Fragment implements SensorEventListener, StepL
                 .collection(UIDFirebase)
                 .document(formattedDate)
                 .update(map);
+        String yourTime = "00:00:00";
+        String today = (String) android.text.format.DateFormat.format(
+                "hh:mm:ss", new java.util.Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        Date date1 = null;
+        try {
+            date1 = sdf.parse(yourTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date date2 = null;
+        try {
+            date2 = sdf.parse(today);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (date1.equals(date2)) {
+            Map<String, Object> mapBaru = new HashMap<>();
+            mapBaru.put("nama", us.getNama());
+            mapBaru.put("berat", us.getBerat());
+            mapBaru.put("tinggi",us.getTinggi());
+            mapBaru.put("hasilBMI",us.gethasilBMI());
+            mapBaru.put("step", 0);
+            firebaseFirestoreDb
+                    .collection(UIDFirebase)
+                    .document(formattedDate).set(mapBaru);
+        }
     }
 
 

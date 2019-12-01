@@ -40,7 +40,7 @@ public class isidata extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_isidata);
         final Date d = Calendar.getInstance().getTime();
-        final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        final SimpleDateFormat df = new SimpleDateFormat("y-MM-dd");
         final String formattedDate = df.format(d);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestoreDb = FirebaseFirestore.getInstance();
